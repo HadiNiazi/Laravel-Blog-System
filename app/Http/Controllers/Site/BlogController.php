@@ -12,7 +12,7 @@ class BlogController extends Controller
 {
     public function index()
     {
-        $blogs = Post::paginate(10);
+        $blogs = Post::where('status', Post::PUBLISHED)->paginate(10);
         return view('site.index', compact('blogs'));
     }
 
@@ -24,7 +24,7 @@ class BlogController extends Controller
             abort(404);
         }
 
-        $comments = Comment::where('post_id', $blog->id)->paginate(10);
+        $comments = Comment::where('post_id', $blog->id)->paginate(5);
         $latestPosts = Post::where('id', '!=', $blog->id)->latest()->limit(5)->get();
         $tags = $blog->tags;
 

@@ -15,7 +15,7 @@ class TagSeeder extends Seeder
      */
     public function run()
     {
-        $categories = ['php', 'laravel php', 'back end development', 'front end dev'];
+        $categories = ['php', 'laravel', 'back end dev', 'front end dev', 'python'];
 
         foreach ($categories as $category) {
             Tag::create([

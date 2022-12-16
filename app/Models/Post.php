@@ -9,6 +9,9 @@ class Post extends Model
 {
     use HasFactory;
 
+    public const PUBLISHED = 1;
+    public const DRAFT = 0;
+
     protected $fillable = ['gallery_id', 'user_id', 'category_id', 'title', 'description', 'status'];
 
     public function tags()
@@ -29,6 +32,11 @@ class Post extends Model
     public function gallery()
     {
         return $this->belongsTo(Gallery::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
     }
 
 }

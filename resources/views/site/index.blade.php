@@ -36,9 +36,8 @@
 
                             <div class="blog-item-content bg-white p-5">
                                 <div class="blog-item-meta bg-gray pt-2 pb-1 px-3">
-                                    <span class="text-muted text-capitalize d-inline-block mr-3"><i class="ti-pencil-alt mr-2"></i>Creativity</span>
-                                    <span class="text-muted text-capitalize d-inline-block mr-3"><i class="ti-comment mr-2"></i>5 Comments</span>
-                                    <span class="text-black text-capitalize d-inline-block mr-3"><i class="ti-time mr-1"></i> 28th January</span>
+                                    <span class="text-muted text-capitalize d-inline-block mr-3"><i class="ti-comment mr-2"></i>{{ $blog->comments ? count($blog->comments): 0 }} Comments</span>
+                                    <span class="text-black text-capitalize d-inline-block mr-3"><i class="ti-time mr-1"></i> {{ date('d M Y', strtotime($blog->created_at)) }}</span>
                                 </div>
 
                                 <h3 class="mt-3 mb-3"><a href="{{ route('single-blog', $blog->id) }}">{{ $blog->title }}</a></h3>

@@ -2,18 +2,21 @@
 
 @section('title', 'Single Blog')
 
+@section('styles')
+
+@endsection
+
 @section('content')
 <section class="page-title bg-1">
     <div class="container">
       <div class="row">
         <div class="col-md-12">
           <div class="block text-center">
-            <span class="text-white">News details</span>
             <h1 class="text-capitalize mb-4 text-lg">Blog Single</h1>
             <ul class="list-inline">
               <li class="list-inline-item"><a href="{{ url('/') }}" class="text-white">Home</a></li>
               <li class="list-inline-item"><span class="text-white">/</span></li>
-              <li class="list-inline-item text-white-50">News details</li>
+              <li class="list-inline-item text-white-50">Blog details</li>
             </ul>
           </div>
         </div>
@@ -91,32 +94,57 @@
 
                         
                         @if (count($comments) > 0)
-                            <div class="col-lg-12 mb-5">
+                            <div class="col-lg-12 mb-5" id="comment-section">
                                 <div class="comment-area card border-0 p-5">
                                     <h4 class="mb-4">{{ count($comments) }} Comments</h4>
                                     <ul class="comment-tree list-unstyled">
                                         @foreach ($comments as $comment)
                                             <li class="mb-5">
                                                 <div class="comment-area-box">
-                                                    <img loading="lazy" alt="comment-author" src="{{ asset('assets/site/images/blog/test1.jpg') }}" class="img-fluid float-left mr-3 mt-2">
+                                                    <img loading="lazy" alt="comment-author" src="{{ asset('assets/site/images/user/user-profile.jpg') }}" style="width: 40px" class="img-fluid float-left mr-3 mt-2">
 
                                                     <h5 class="mb-1">{{ $comment->user ? $comment->user->name: '' }}</h5>
                                                     <span>{{ $comment->user ? $comment->user->email: '' }}</span>
 
                                                     <div class="comment-meta mt-4 mt-lg-0 mt-md-0 float-lg-right float-md-right">
-                                                        <span class="date-comm">Posted {{ $comment->user ? date('M d D Y', strtotime($comment->user->created_at)) : '' }}</span>
+                                                        <span class="date-comm">Posted {{ $comment->user ? date('M d D Y', strtotime($comment->created_at)) : '' }}</span>
                                                     </div>
 
                                                     <div class="comment-content mt-3">
                                                         <p>{{ $comment ? $comment->comment: '' }}</p>
                                                     </div>
+
+                                                    <div class="ml-5">
+                                                        @if ($comment->commentReplies)
+                                                            @foreach ($comment->commentReplies as $reply)
+                                                            
+                                                            <form method="post" action="{{ route('comment.reply.delete') }}">
+                                                                @csrf
+                                                                @method('DELETE')
+
+                                                                <input type="hidden" name="reply_id" value="{{ $reply->id }}">
+                                                                <div class="comment-meta mt-4 mt-lg-0 mt-md-0 float-lg-right float-md-right">
+                                                                    <span class="date-comm"><button type="submit" class=" btn-danger" id="reply-delete-btn"><i class="fas fa-trash"></i></button></span>
+                                                                </div>
+                                                            </form>
+        
+                                                            <div class="comment-content mt-3">
+                                                                <p>{{ $reply->comment }}</p>
+                                                            </div>
+                                                            @endforeach
+                                                        @endif
+                                                    </div>
+
                                                 </div>
 
                                                 <span class="show-reply" style="float: right; cursor: pointer;">Show Reply</span>
 
                                                 <div class="form-group comment-reply-div">
-                                                    <textarea name="comment" id="comment" class="form-control" cols="20" rows="3" placeholder="Enter comment here..."></textarea>
-                                                    <button class="btn btn-sm btn-info mt-3" style="float: right">Reply</button>
+                                                    <form method="post" action="{{ route('comment.reply', $comment->id) }}">
+                                                        @csrf
+                                                        <textarea name="comment" id="comment" class="form-control" cols="20" rows="3" placeholder="Enter comment here..."></textarea>
+                                                        <button class="btn btn-sm btn-info mt-3" style="float: right">Reply</button>
+                                                    </form>
                                                 </div>
 
                                             </li>
@@ -192,5 +220,11 @@
         });
 
     });
+</script>
+
+<script>
+     $('html, body').animate({
+        scrollTop: $("#comment-section").offset().top
+    }, 2000);
 </script>
 @endsection

@@ -184,7 +184,6 @@
                   <li class="dropdown-footer">
                     <form id="logout-form" method="post" action="{{ route('logout') }}">
                     @csrf 
-
                     <a id="logout-button" class="dropdown-link-item" href="javascript:void(0)"> <i class="mdi mdi-logout"></i> Log Out </a>
 
                     </form>
@@ -232,6 +231,14 @@
 
                 
         @yield('scripts')
+
+        <script>
+          $(document).ready(function() {
+            $('#logout-button').click(function() {
+              $('#logout-form').submit();
+            });
+          });
+        </script>
 
 
   </body>
